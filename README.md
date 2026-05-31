@@ -483,7 +483,6 @@ void runQuickSortWords()
     printf("\nWaktu Eksekusi : %.12f detik\n", waktu);
 }
 
-5
 
 /* 
 =============================
@@ -632,4 +631,106 @@ void menuSimpleSorting()
 
     }
     while (pilih != 4);
+}
+
+
+/* 
+===========================
+   MENU ADVANCED SORTING
+=========================== 
+*/
+
+void menuAdvancedSorting()
+{
+    int pilih;
+
+    do
+    {
+        printf("\n=================================\n");
+        printf("        ADVANCED SORTING\n");
+        printf("==================================\n");
+
+        printf("1. Merge Sort\n");
+        printf("2. Quick Sort\n");
+        printf("3. Shell Sort\n");
+        printf("4. Kembali\n");
+
+        printf("\nPilih Metode : ");
+
+        pilih = inputInteger();
+
+        switch (pilih)
+        {
+            case 1:
+                runMergeSortWords();
+                break;
+
+            case 2:
+                runQuickSortWords();
+                break;
+
+            case 3:
+                runShellSortWords();
+                break;
+
+            case 4:
+                printf("\nKembali ke Main Menu...\n");
+                break;
+
+            default:
+                printf("\nMenu tidak tersedia!\n");
+        }
+
+    }
+    while (pilih != 4);
+}
+
+/* 
+=========================
+      PROGRAM UTAMA
+========================= 
+*/
+
+int main()
+{
+    srand((unsigned)time(NULL));
+
+    int pilihan;
+
+    do
+    {
+        printf("\n=================================\n");
+        printf("            MAIN MENU\n");
+        printf("=================================\n");
+
+        printf("1. Simple Sorting\n");
+        printf("2. Advanced Sorting\n");
+        printf("3. Exit\n");
+
+        printf("\nPilih Menu : ");
+
+        pilihan = inputInteger();
+
+        switch (pilihan)
+        {
+            case 1:
+                menuSimpleSorting();
+                break;
+
+            case 2:
+                menuAdvancedSorting();
+                break;
+
+            case 3:
+                printf("\nProgram selesai.\n");
+                break;
+
+            default:
+                printf("\nMenu tidak tersedia!\n");
+        }
+
+    }
+    while (pilihan != 3);
+
+    return 0;
 }
