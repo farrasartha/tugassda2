@@ -230,3 +230,117 @@ void selectionSort(int arr[], int n)
         swap(&arr[i], &arr[min]);
     }
 }
+
+
+/* 
+================================
+   MENJALANKAN SIMPLE SORTING
+================================ 
+*/
+
+void runSimpleSorting(
+    void (*sortFunc)(int[], int),
+    const char *nama)
+{
+    int arr[SIZE];
+
+    generateData(arr, SIZE);
+
+    shuffleData(arr, SIZE);
+
+    printf("\n=== %s ===\n", nama);
+
+    printf("\n10 Data Sebelum Sorting:\n\n");
+
+    tampilData(arr, SIZE);
+
+    clock_t start = clock();
+
+    sortFunc(arr, SIZE);
+
+    clock_t end = clock();
+
+    printf("\n10 Data Sesudah Sorting:\n\n");
+
+    tampilData(arr, SIZE);
+
+    double waktu =
+        (double)(end - start)
+        / CLOCKS_PER_SEC;
+
+    printf(
+        "\nWaktu Eksekusi : %.12f detik\n",
+        waktu
+    );
+}
+
+/* 
+=============================
+      ADVANCED SORTING
+=============================
+
+=============================
+   MERGE SORT UNTUK STRING
+============================= 
+*/
+
+void merge(char arr[][MAX_LEN], int left, int mid, int right)
+{
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    char L[n1][MAX_LEN];
+    char R[n2][MAX_LEN];
+
+    for (int i = 0; i < n1; i++)
+        strcpy(L[i], arr[left + i]);
+
+    for (int j = 0; j < n2; j++)
+        strcpy(R[j], arr[mid + 1 + j]);
+
+    int i = 0;
+    int j = 0;
+    int k = left;
+
+    while (i < n1 && j < n2)
+    {
+        if (strcmp(L[i], R[j]) <= 0)
+        {
+            strcpy(arr[k], L[i]);
+            i++;
+        }
+        else
+        {
+            strcpy(arr[k], R[j]);
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1)
+    {
+        strcpy(arr[k], L[i]);
+        i++;
+        k++;
+    }
+
+    while (j < n2)
+    {
+        strcpy(arr[k], R[j]);
+        j++;
+        k++;
+    }
+}
+
+void mergeSortWords(char arr[][MAX_LEN], int left, int right)
+{
+    if (left < right)
+    {
+        int mid = left + (right - left) / 2;
+
+        mergeSortWords(arr, left, mid);
+        mergeSortWords(arr, mid + 1, right);
+
+        merge(arr, left, mid, right);
+    }
+}
