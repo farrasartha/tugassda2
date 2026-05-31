@@ -344,3 +344,141 @@ void mergeSortWords(char arr[][MAX_LEN], int left, int right)
         merge(arr, left, mid, right);
     }
 }
+
+/* 
+==============================
+   MENJALANKAN MERGE SORT
+============================== 
+*/
+
+void runMergeSortWords()
+{
+    if (!loadWords("words.txt"))
+        return;
+
+    printf("\n=== MERGE SORT ===\n");
+
+    printf("\n10 Kata Sebelum Sorting:\n\n");
+    tampilWords();
+
+    clock_t start = clock();
+
+    for (int i = 0; i < 100; i++)
+    {
+        loadWords("words.txt");
+        shuffleWords();
+        mergeSortWords(words, 0, wordCount - 1);
+    }
+
+    clock_t end = clock();
+
+    printf("\n10 Kata Sesudah Sorting:\n\n");
+    tampilWords();
+
+    double waktu =
+        (double)(end - start) / CLOCKS_PER_SEC;
+
+    printf("\nWaktu Eksekusi : %.12f detik\n", waktu);
+}
+
+/* 
+=============================
+   QUICK SORT UNTUK STRING
+============================= 
+*/
+
+int partitionWords(
+    char arr[][MAX_LEN],
+    int low,
+    int high)
+{
+    char pivot[MAX_LEN];
+
+    strcpy(pivot, arr[high]);
+
+    int i = low - 1;
+
+    for (int j = low; j < high; j++)
+    {
+        if (strcmp(arr[j], pivot) < 0)
+        {
+            i++;
+
+            swapWords(
+                arr[i],
+                arr[j]
+            );
+        }
+    }
+
+    swapWords(
+        arr[i + 1],
+        arr[high]
+    );
+
+    return i + 1;
+}
+
+void quickSortWords(
+    char arr[][MAX_LEN],
+    int low,
+    int high)
+{
+    if (low < high)
+    {
+        int pi =
+            partitionWords(
+                arr,
+                low,
+                high
+            );
+
+        quickSortWords(
+            arr,
+            low,
+            pi - 1
+        );
+
+        quickSortWords(
+            arr,
+            pi + 1,
+            high
+        );
+    }
+}
+
+/* 
+============================
+   MENJALANKAN QUICK SORT
+============================ 
+*/
+
+void runQuickSortWords()
+{
+    if (!loadWords("words.txt"))
+        return;
+
+    printf("\n=== QUICK SORT ===\n");
+
+    printf("\n10 Kata Sebelum Sorting:\n\n");
+    tampilWords();
+
+    clock_t start = clock();
+
+    for (int i = 0; i < 100; i++)
+    {
+        loadWords("words.txt");
+        shuffleWords();
+        quickSortWords(words, 0, wordCount - 1);
+    }
+
+    clock_t end = clock();
+
+    printf("\n10 Kata Sesudah Sorting:\n\n");
+    tampilWords();
+
+    double waktu =
+        (double)(end - start) / CLOCKS_PER_SEC;
+
+    printf("\nWaktu Eksekusi : %.12f detik\n", waktu);
+}
