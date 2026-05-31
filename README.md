@@ -272,3 +272,478 @@ void runSimpleSorting(
         waktu
     );
 }
+/* 
+=============================
+      ADVANCED SORTING
+=============================
+
+=============================
+   MERGE SORT UNTUK STRING
+============================= 
+*/
+
+void merge(char arr[][MAX_LEN], int left, int mid, int right)
+{
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    char L[n1][MAX_LEN];
+    char R[n2][MAX_LEN];
+
+    for (int i = 0; i < n1; i++)
+        strcpy(L[i], arr[left + i]);
+
+    for (int j = 0; j < n2; j++)
+        strcpy(R[j], arr[mid + 1 + j]);
+
+    int i = 0;
+    int j = 0;
+    int k = left;
+
+    while (i < n1 && j < n2)
+    {
+        if (strcmp(L[i], R[j]) <= 0)
+        {
+            strcpy(arr[k], L[i]);
+            i++;
+        }
+        else
+        {
+            strcpy(arr[k], R[j]);
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1)
+    {
+        strcpy(arr[k], L[i]);
+        i++;
+        k++;
+    }
+
+    while (j < n2)
+    {
+        strcpy(arr[k], R[j]);
+        j++;
+        k++;
+    }
+}
+
+void mergeSortWords(char arr[][MAX_LEN], int left, int right)
+{
+    if (left < right)
+    {
+        int mid = left + (right - left) / 2;
+
+        mergeSortWords(arr, left, mid);
+        mergeSortWords(arr, mid + 1, right);
+
+        merge(arr, left, mid, right);
+    }
+}
+
+/* 
+==============================
+   MENJALANKAN MERGE SORT
+============================== 
+*/
+
+void runMergeSortWords()
+{
+    if (!loadWords("words.txt"))
+        return;
+
+    shuffleWords();
+
+    printf("\n=== MERGE SORT ===\n");
+
+    printf("\n10 Kata Sebelum Sorting:\n\n");
+    tampilWords();
+
+    clock_t start = clock();
+
+    mergeSortWords(
+        words,
+        0,
+        wordCount - 1
+    );
+
+    clock_t end = clock();
+
+    printf("\n10 Kata Sesudah Sorting:\n\n");
+    tampilWords();
+
+    double waktu =
+        (double)(end - start)
+        / CLOCKS_PER_SEC;
+
+    printf(
+        "\nWaktu Eksekusi : %.12f detik\n",
+        waktu
+    );
+}
+
+/* 
+=============================
+   QUICK SORT UNTUK STRING
+============================= 
+*/
+
+int partitionWords(
+    char arr[][MAX_LEN],
+    int low,
+    int high)
+{
+    char pivot[MAX_LEN];
+
+    strcpy(pivot, arr[high]);
+
+    int i = low - 1;
+
+    for (int j = low; j < high; j++)
+    {
+        if (strcmp(arr[j], pivot) < 0)
+        {
+            i++;
+
+            swapWords(
+                arr[i],
+                arr[j]
+            );
+        }
+    }
+
+    swapWords(
+        arr[i + 1],
+        arr[high]
+    );
+
+    return i + 1;
+}
+
+void quickSortWords(
+    char arr[][MAX_LEN],
+    int low,
+    int high)
+{
+    if (low < high)
+    {
+        int pi =
+            partitionWords(
+                arr,
+                low,
+                high
+            );
+
+        quickSortWords(
+            arr,
+            low,
+            pi - 1
+        );
+
+        quickSortWords(
+            arr,
+            pi + 1,
+            high
+        );
+    }
+}
+
+/* 
+============================
+   MENJALANKAN QUICK SORT
+============================ 
+*/
+
+void runQuickSortWords()
+{
+    if (!loadWords("words.txt"))
+        return;
+
+    shuffleWords();
+
+    printf("\n=== QUICK SORT ===\n");
+
+    printf("\n10 Kata Sebelum Sorting:\n\n");
+
+    tampilWords();
+
+    clock_t start = clock();
+
+    quickSortWords(
+        words,
+        0,
+        wordCount - 1
+    );
+
+    clock_t end = clock();
+
+    printf("\n10 Kata Sesudah Sorting:\n\n");
+
+    tampilWords();
+
+    double waktu =
+        (double)(end - start)
+        / CLOCKS_PER_SEC;
+
+    printf(
+        "\nWaktu Eksekusi : %.12f detik\n",
+        waktu
+    );
+}
+/* 
+=============================
+   SHELL SORT UNTUK STRING
+============================= 
+*/
+
+void shellSortWords(
+    char arr[][MAX_LEN],
+    int n)
+{
+    for (int gap = n / 2;
+         gap > 0;
+         gap /= 2)
+    {
+        for (int i = gap;
+             i < n;
+             i++)
+        {
+            char temp[MAX_LEN];
+
+            strcpy(
+                temp,
+                arr[i]
+            );
+
+            int j;
+
+            for (
+                j = i;
+                j >= gap &&
+                strcmp(
+                    arr[j - gap],
+                    temp
+                ) > 0;
+                j -= gap
+            )
+            {
+                strcpy(
+                    arr[j],
+                    arr[j - gap]
+                );
+            }
+
+            strcpy(
+                arr[j],
+                temp
+            );
+        }
+    }
+}
+
+/* 
+============================
+   MENJALANKAN SHELL SORT
+============================ 
+*/
+
+void runShellSortWords()
+{
+    if (!loadWords("words.txt"))
+        return;
+
+    shuffleWords();
+
+    printf("\n=== SHELL SORT ===\n");
+
+    printf("\n10 Kata Sebelum Sorting:\n\n");
+
+    tampilWords();
+
+    clock_t start = clock();
+
+    shellSortWords(
+        words,
+        wordCount
+    );
+
+    clock_t end = clock();
+
+    printf("\n10 Kata Sesudah Sorting:\n\n");
+
+    tampilWords();
+
+    double waktu =
+        (double)(end - start)
+        / CLOCKS_PER_SEC;
+
+    printf(
+        "\nWaktu Eksekusi : %.12f detik\n",
+        waktu
+    );
+}
+
+/* 
+=========================
+   MENU SIMPLE SORTING
+========================= 
+*/
+
+void menuSimpleSorting()
+{
+    int pilih;
+
+    do
+    {
+        printf("\n=================================\n");
+        printf("         SIMPLE SORTING\n");
+        printf("==================================\n");
+
+        printf("1. Bubble Sort\n");
+        printf("2. Insertion Sort\n");
+        printf("3. Selection Sort\n");
+        printf("4. Kembali\n");
+
+        printf("\nPilih Metode : ");
+
+        pilih = inputInteger();
+
+        switch (pilih)
+        {
+            case 1:
+                runSimpleSorting(
+                    bubbleSort,
+                    "Bubble Sort"
+                );
+                break;
+
+            case 2:
+                runSimpleSorting(
+                    insertionSort,
+                    "Insertion Sort"
+                );
+                break;
+
+            case 3:
+                runSimpleSorting(
+                    selectionSort,
+                    "Selection Sort"
+                );
+                break;
+
+            case 4:
+                printf("\nKembali ke Main Menu...\n");
+                break;
+
+            default:
+                printf(
+                    "\nMenu tidak tersedia!\n"
+                );
+        }
+
+    }
+    while (pilih != 4);
+}
+
+/* 
+===========================
+   MENU ADVANCED SORTING
+=========================== 
+*/
+
+void menuAdvancedSorting()
+{
+    int pilih;
+
+    do
+    {
+        printf("\n=================================\n");
+        printf("        ADVANCED SORTING\n");
+        printf("==================================\n");
+
+        printf("1. Merge Sort\n");
+        printf("2. Quick Sort\n");
+        printf("3. Shell Sort\n");
+        printf("4. Kembali\n");
+
+        printf("\nPilih Metode : ");
+
+        pilih = inputInteger();
+
+        switch (pilih)
+        {
+            case 1:
+                runMergeSortWords();
+                break;
+
+            case 2:
+                runQuickSortWords();
+                break;
+
+            case 3:
+                runShellSortWords();
+                break;
+
+            case 4:
+                printf("\nKembali ke Main Menu...\n");
+                break;
+
+            default:
+                printf("\nMenu tidak tersedia!\n");
+        }
+
+    }
+    while (pilih != 4);
+}
+
+/* 
+=========================
+      PROGRAM UTAMA
+========================= 
+*/
+
+int main()
+{
+    srand((unsigned)time(NULL));
+
+    int pilihan;
+
+    do
+    {
+        printf("\n=================================\n");
+        printf("            MAIN MENU\n");
+        printf("=================================\n");
+
+        printf("1. Simple Sorting\n");
+        printf("2. Advanced Sorting\n");
+        printf("3. Exit\n");
+
+        printf("\nPilih Menu : ");
+
+        pilihan = inputInteger();
+
+        switch (pilihan)
+        {
+            case 1:
+                menuSimpleSorting();
+                break;
+
+            case 2:
+                menuAdvancedSorting();
+                break;
+
+            case 3:
+                printf("\nProgram selesai.\n");
+                break;
+
+            default:
+                printf("\nMenu tidak tersedia!\n");
+        }
+
+    }
+    while (pilihan != 3);
+
+    return 0;
+}
