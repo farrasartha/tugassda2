@@ -1,7 +1,7 @@
 # tugassda2
 /*
 ========================================================
-Nama Kelompok : Kelompok 12
+Nama Kelompok : Kelompok 12 
 
 Mata Kuliah   : Praktikum Struktur Data dan Algoritma
 
